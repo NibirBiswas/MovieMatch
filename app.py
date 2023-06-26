@@ -23,21 +23,27 @@ def recommend(movie):
         recommended_movie_posters.append(fetch_poster(id))
         recommended_movie_names.append(movies.iloc[i[0]].title)
 
-    return recommended_movie_names,recommended_movie_posters
+    return recommended_movie_names, recommended_movie_posters
 
 st.header('MovieMatch - a Project by Nibir Biswas')
 movies_dict = pickle.load(open('movies.pkl', 'rb'))
 movies = pd.DataFrame(movies_dict)
+
+# Define the URL and local file path for 'similarity.pkl'
+similarity_url = "URL_OF_THE_FILE"
+similarity_file_path = "similarity.pkl"
+
 def download_file(url, file_path):
     response = requests.get(url)
     with open(file_path, 'wb') as f:
         f.write(response.content)
-similarity_url = "https://drive.google.com/file/d/1Ep1VXBos5Nqo43OPxwk7TVXEfM-x9ulH/view"
-similarity_file_path = "similarity.pkl"
+
+# Download the file if it doesn't exist locally
 if not os.path.exists(similarity_file_path):
     download_file(similarity_url, similarity_file_path)
-similarity = pickle.load(open(similarity_file_path, 'rb'))
 
+# Load the 'similarity.pkl' file
+similarity = pickle.load(open(similarity_file_path, 'rb'))
 
 movie_list = movies['title'].values
 selected_movie = st.selectbox(
@@ -45,7 +51,7 @@ selected_movie = st.selectbox(
     movie_list
 )
 if st.button('Recommend Me!'):
-    recommended_movie_names,recommended_movie_posters = recommend(selected_movie)
+    recommended_movie_names, recommended_movie_posters = recommend(selected_movie)
     col1, col2, col3, col4, col5 = st.columns(5)
     with col1:
         st.text(recommended_movie_names[0])

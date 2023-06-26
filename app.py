@@ -8,7 +8,7 @@ def fetch_poster(id):
     data = requests.get(url)
     data = data.json()
     poster_path = data['poster_path']
-    full_path = "https://image.tmdb.org/t/p/original/" + poster_path
+    full_path = "https://image.tmdb.org/t/p/w500/" + poster_path
     return full_path
 
 def recommend(movie):
@@ -27,21 +27,7 @@ def recommend(movie):
 st.header('MovieMatch - a Project by Nibir Biswas')
 movies_dict = pickle.load(open('movies.pkl', 'rb'))
 movies = pd.DataFrame(movies_dict)
-def download_file_from_drive(file_id, destination):
-    url = f"https://drive.google.com/uc?export=download&id={file_id}"
-    response = requests.get(url)
-    with open(destination, 'wb') as f:
-        f.write(response.content)
-
-# Define the file ID and destination path
-similarity_file_id = "your_file_id_here"
-similarity_file_path = "similarity.pkl"
-
-# Download the file from Google Drive
-download_file_from_drive(similarity_file_id, similarity_file_path)
-
-# Load the similarity data
-similarity = pickle.load(open(similarity_file_path, 'rb'))
+similarity = pickle.load(open('similarity.pkl', 'rb'))
 
 movie_list = movies['title'].values
 selected_movie = st.selectbox(

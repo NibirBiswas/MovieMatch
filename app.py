@@ -2,6 +2,7 @@ import streamlit as st
 import pickle
 import pandas as pd
 import requests
+import os
 
 def fetch_poster(id):
     url = "https://api.themoviedb.org/3/movie/{}?api_key=b22cb560447294856a2dba69bc7b10a0&language=en-US".format(id)
@@ -27,7 +28,15 @@ def recommend(movie):
 st.header('MovieMatch - a Project by Nibir Biswas')
 movies_dict = pickle.load(open('movies.pkl', 'rb'))
 movies = pd.DataFrame(movies_dict)
-similarity = pickle.load(open('similarity.pkl', 'rb'))
+def download_file(url, file_path):
+    response = requests.get(url)
+    with open(file_path, 'wb') as f:
+        f.write(response.content)
+similarity_url = "https://drive.google.com/file/d/1Ep1VXBos5Nqo43OPxwk7TVXEfM-x9ulH/view"
+similarity_file_path = "similarity.pkl"
+if not os.path.exists(similarity_file_path):
+    download_file(similarity_url, similarity_file_path)
+similarity = pickle.load(open(similarity_file_path, 'rb'))
 
 
 movie_list = movies['title'].values

@@ -1,0 +1,10 @@
+{
+  "name": "MovieMatch",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "streamlit run app.py"
+  },
+  "dependencies": {
+    "streamlit": "^0.89.0"
+  }
+}
